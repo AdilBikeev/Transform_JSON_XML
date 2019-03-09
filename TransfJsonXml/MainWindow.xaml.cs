@@ -24,5 +24,18 @@ namespace TransfJsonXml
         {
             InitializeComponent();
         }
+
+        private void ToXML_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void ToJSON_Click(object sender, RoutedEventArgs e)//преобразует из XML - JSON объект
+        {
+            
+            string xmlStr = new TextRange(rtbXML.Document.ContentStart, rtbXML.Document.ContentEnd).Text; // запоминаем данные в формате XML и представляем их в виде строки
+            string jsonStr = string.Empty;
+            Tag tags = new Tag(xmlStr);
+        }
     }
 }

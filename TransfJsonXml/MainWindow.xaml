@@ -5,8 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TransfJsonXml"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Преобразование JSON-XML" Height="800" Width="1500" ResizeMode="NoResize">
     <Grid>
-        
+        <StackPanel>
+            <DockPanel>
+                <Button x:Name="ToXML" Margin="225 0 0 0" Content="JSON->XML" Width="200" Height="40" Click="ToXML_Click"></Button>
+                <Button x:Name="ToJSON" Margin="225 0 0 0" Content="XML->JSON" Width="200" Click="ToJSON_Click"></Button>
+            </DockPanel>
+            <DockPanel>
+                <StackPanel>
+                    <RichTextBox x:Name="rtbJSON"  FontSize="30" Width="750" Height="700"/>
+                    <Label Content="Данные в JSON формате"/>
+                </StackPanel>
+                <StackPanel>
+                    <RichTextBox x:Name="rtbXML" FontSize="30" Width="750" Height="700"></RichTextBox>
+                    <Label>Данные в XML формате</Label>
+                </StackPanel>
+            </DockPanel>
+        </StackPanel>
     </Grid>
 </Window>
