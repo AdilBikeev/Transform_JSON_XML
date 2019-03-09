@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace TransfJsonXml
 {
-    [Serializable]
     class Tag
     {
         string name;//имя тега
@@ -24,7 +23,7 @@ namespace TransfJsonXml
         {
             Name = xml;
             
-            if(name.Length + 5 != xml.IndexOf(name + "/>"))//если внутри тега есть ещё теги
+            if(name.Length + 5 != xml.IndexOf('/' + name + '>'))//если внутри тега есть ещё теги
             {
                 tags = new List<Tag>();
 
@@ -33,13 +32,13 @@ namespace TransfJsonXml
                 int indexStartContent = 0,//индекс начала содержимого тега
                     indexEndContent = 0;//индекс конца содержимого тега
 
-                while (contentXML.IndexOf(tagName + '/') != -1)//пока внутри данного тега не закончились подтеги
+                while (contentXML.IndexOf('/' + tagName + '>') != -1)//пока внутри данного тега не закончились подтеги
                 {
                     indexStartContent = tagName.Length + 4;
                     indexEndContent = contentXML.IndexOf(tagName, indexStartContent)-1;
 
                     contentXML = contentXML.Remove(0, indexStartContent);//удаляем помимо открытого тега - спецсимволы(< > \n \r)
-                    contentXML = contentXML.Remove(indexEndContent - (tagName.Length + 4), tagName.Length + 5);//удаляем закрывающий тег
+                    contentXML = contentXML.Remove(indexEndContent - (tagName.Length + 5), tagName.Length + 5);//удаляем закрывающий тег
 
                     if(contentXML.IndexOf('/') != -1)
                     {
@@ -48,6 +47,24 @@ namespace TransfJsonXml
                     }
                 }
             }
+        }
+        
+        public string setSpace(string json)
+        {
+            string jsnNew = string.Empty;
+           // int countOpenTab = 1;//кол-во сделанных табуляций для открывающих тегов
+
+            for(int i = 0; i < json.Length; i++)
+            {
+                jsnNew += json[i];
+
+                if (json[i] == '{')
+                {
+                    jsnNew += '\n';
+                    for (int j = 0; j <= i; j++) jsnNew += '\t';
+                }
+            }
+            return jsnNew;
         }
 
         public string getTagName(string xml)
@@ -91,7 +108,7 @@ namespace TransfJsonXml
                     if (i + 1 != tag.tags.Count) json += ',';
                 }
             }
-
+            json = setSpace(json);
             return json;
         }
     }
