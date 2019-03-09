@@ -36,6 +36,9 @@ namespace TransfJsonXml
             string xmlStr = new TextRange(rtbXML.Document.ContentStart, rtbXML.Document.ContentEnd).Text; // запоминаем данные в формате XML и представляем их в виде строки
             string jsonStr = string.Empty;
             Tag tags = new Tag(xmlStr);
+
+            rtbJSON.Document.Blocks.Clear();//очищаем содержимое 
+            rtbJSON.AppendText(tags.toJSON(tags));
         }
     }
 }

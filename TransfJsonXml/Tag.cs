@@ -60,20 +60,39 @@ namespace TransfJsonXml
             return tagName;
         }
 
-        public static string toJSON(Tag tag)//преобразует из XML в JSON
+        public  string getJsonTag(Tag tag, string json)//возвращает JSON представление Tag в спомощью рекурсии
         {
-            string json = string.Empty;
-            json += "{ \"" + tag.Name + "\" : ";
-
-            if(tag.tags.Count > 1)
+            json += "\"" + tag.Name + "\"";
+            if (tag.tags != null)//если внутри тега есть ещё подтег
             {
-                foreach(Tag item in tag.tags)
+                json += " : ";
+                if (tag.tags[0].tags != null) json += '{';
+                for (int i = 0; i < tag.tags.Count; i++)//перечисляем внутренние теги
                 {
-                    //json += "{ \"" + item.Name + "\" : " + /*функция, которая возвращает все внутренние теги для item*/;
+                    json = getJsonTag(tag.tags[i], json);
+                    if (i + 1 != tag.tags.Count) json += ',';
                 }
             }
+            json += '}';
+            return json;
         }
 
-        
+        public  string toJSON(Tag tag)//преобразует из XML в JSON
+        {
+            string json = string.Empty;
+            json += "{ \"" + tag.Name + "\"";
+            if(tag.tags != null)
+            {
+                json += " : ";
+                if (tag.tags[0].tags != null) json += '{';
+                for (int i = 0; i < tag.tags.Count; i++)//перечисляем внутренние теги
+                {
+                    json = getJsonTag(tag.tags[i], json);
+                    if (i + 1 != tag.tags.Count) json += ',';
+                }
+            }
+
+            return json;
+        }
     }
 }
