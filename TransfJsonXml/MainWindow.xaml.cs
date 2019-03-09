@@ -33,10 +33,12 @@ namespace TransfJsonXml
             string jsonStr = new TextRange(rtbJSON.Document.ContentStart, rtbJSON.Document.ContentEnd).Text; // запоминаем данные в формате JSON и представляем их в виде строки
             try
             {
-                XmlNode xmlNode = JsonConvert.DeserializeXmlNode(jsonStr);
-
+                XmlDocument doc = JsonConvert.DeserializeXmlNode(jsonStr);
+                string xmlStr = Space.setSpaceXml(doc);
+                //TagXml tagXml = new TagXml(xmlNode.OuterXml);//парсим данные xml
+                
                 rtbXML.Document.Blocks.Clear();
-                rtbXML.AppendText(xmlNode.OuterXml);
+                rtbXML.AppendText(xmlStr);
             }
             catch (Exception exc)
             {
@@ -53,6 +55,8 @@ namespace TransfJsonXml
                 doc.LoadXml(xmlStr);
 
                 string jsonStr = JsonConvert.SerializeXmlNode(doc);
+                jsonStr = Space.setSpaceJson(jsonStr);
+
 
                 rtbJSON.Document.Blocks.Clear();
                 rtbJSON.AppendText(jsonStr);
