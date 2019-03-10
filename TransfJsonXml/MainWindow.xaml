@@ -5,21 +5,34 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TransfJsonXml"
         mc:Ignorable="d"
-        Title="Преобразование JSON-XML" Height="800" Width="1500" ResizeMode="NoResize">
+        Title="Преобразование JSON-XML" Height="900" Width="1520" ResizeMode="NoResize">
     <Grid>
         <StackPanel>
+            <Menu Height="20">
+                <MenuItem Header="Файл">
+                    <MenuItem x:Name="miOpenFile" Header="Открыть" Click="MiOpenFile_Click">
+                    </MenuItem>
+                    <MenuItem Header="Сохранить как">
+                        <MenuItem x:Name="miSaveAsJson" Header="JSON" Click="MiSaveAsJson_Click" ></MenuItem>
+                        <MenuItem x:Name="miSaveAsXML" Header="XML" Click="MiSaveAsXML_Click"></MenuItem>
+                    </MenuItem>
+                    <MenuItem x:Name="miClose" Header="Закрыть" Click="MiClose_Click"></MenuItem>
+                </MenuItem>
+            </Menu>
             <DockPanel>
-                <Button x:Name="ToXML" Margin="225 0 0 0" Content="JSON->XML" Width="200" Height="40" Click="ToXML_Click"></Button>
-                <Button x:Name="ToJSON" Margin="225 0 0 0" Content="XML->JSON" Width="200" Click="ToJSON_Click"></Button>
+                <Button x:Name="ToXML" Margin="235 0 0 0" Content="JSON->XML" Width="200" Height="40" Click="ToXML_Click"></Button>
+                <Button x:Name="ToJSON" Margin="235 0 0 0" Content="XML->JSON" Width="200" Click="ToJSON_Click"></Button>
             </DockPanel>
             <DockPanel>
                 <StackPanel>
-                    <RichTextBox x:Name="rtbJSON"  FontSize="30" Width="750" Height="700"/>
+                    <RichTextBox x:Name="rtbJSON"  FontSize="30" Width="750" Height="700" VerticalScrollBarVisibility="Visible"/>
                     <Label Content="Данные в JSON формате"/>
+                    <Button x:Name="btnClearJSON" Content="Очистить" Click="BtnClearJSON_Click"></Button>
                 </StackPanel>
                 <StackPanel>
-                    <RichTextBox x:Name="rtbXML" FontSize="30" Width="750" Height="700"></RichTextBox>
+                    <RichTextBox x:Name="rtbXML" FontSize="30" Width="750" Height="700" VerticalScrollBarVisibility="Visible"></RichTextBox>
                     <Label>Данные в XML формате</Label>
+                    <Button x:Name="btnClearXML" Content="Очистить" Click="BtnClearXML_Click"></Button>
                 </StackPanel>
             </DockPanel>
         </StackPanel>

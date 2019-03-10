@@ -1,20 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Xml;
-using Json;
 using Newtonsoft.Json;
+using Microsoft.Win32;
+using System.IO;
 
 namespace TransfJsonXml
 {
@@ -35,14 +25,13 @@ namespace TransfJsonXml
             {
                 XmlDocument doc = JsonConvert.DeserializeXmlNode(jsonStr);
                 string xmlStr = Space.setSpaceXml(doc);
-                //TagXml tagXml = new TagXml(xmlNode.OuterXml);//парсим данные xml
                 
                 rtbXML.Document.Blocks.Clear();
                 rtbXML.AppendText(xmlStr);
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message, "ERROR");
+                MessageBox.Show(exc.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -63,8 +52,104 @@ namespace TransfJsonXml
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message, "ERROR");
+                MessageBox.Show(exc.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void MiSaveAsJson_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveDlg = new SaveFileDialog();
+
+            string filter = "JSON (*.json)| *json";
+            try
+            {
+                saveDlg.Filter = filter;//устанавливаем расширения файлов, в которых могут быть сохранены данные
+
+                if (saveDlg.ShowDialog() == true)//если пользователь указал куда сохранять файл
+                {
+                    using(StreamWriter writer = new StreamWriter(saveDlg.FileName + ".json"))
+                    {
+                        string str = new TextRange(rtbJSON.Document.ContentStart, rtbJSON.Document.ContentEnd).Text;
+                        writer.Write(str);
+                        MessageBox.Show("Файл успешно сохранён по указанному вами пути", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                }
+            }catch(Exception exc)
+            {
+                MessageBox.Show(exc.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void MiSaveAsXML_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveDlg = new SaveFileDialog();
+
+            string filter = "XML (*.xml)| *xml";
+            try
+            {
+                saveDlg.Filter = filter;//устанавливаем расширения файлов, в которых могут быть сохранены данные
+           
+                if (saveDlg.ShowDialog() == true)//если пользователь указал куда сохранять файл
+                {
+                    using (StreamWriter writer = new StreamWriter(saveDlg.FileName + ".xml"))
+                    {
+                        string str = new TextRange(rtbXML.Document.ContentStart, rtbXML.Document.ContentEnd).Text;
+                        writer.Write(str);
+                        MessageBox.Show("Файл успешно сохранён по указанному вами пути", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void MiOpenFile_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openDlg = new OpenFileDialog();
+            string[] filter = { ".xml", ".json" };
+            try
+            {
+                openDlg.Filter = "XML (*.xml)|*.xml|JSON (*.json)|*.json";//устанавливаем расширения файлов, в которых могут быть сохранены данные
+
+                if (openDlg.ShowDialog() == true)//если пользователь указал какой файл открывать
+                {
+                    using (StreamReader reader = new StreamReader(openDlg.FileName))
+                    {
+                        string textFile = reader.ReadToEnd();
+                        if (openDlg.FilterIndex == 1)//если открыт XML файл
+                        {
+                            rtbXML.AppendText(textFile);
+                            ToJSON_Click(null, e);
+                        }
+                        else
+                        {
+                            rtbJSON.AppendText(textFile);
+                            ToXML_Click(null, e);
+                        }
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void BtnClearJSON_Click(object sender, RoutedEventArgs e)
+        {
+            rtbJSON.Document.Blocks.Clear();
+        }
+
+        private void BtnClearXML_Click(object sender, RoutedEventArgs e)
+        {
+            rtbXML.Document.Blocks.Clear();
+        }
+
+        private void MiClose_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }
